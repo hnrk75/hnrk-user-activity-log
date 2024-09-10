@@ -2,7 +2,7 @@
 /**
  * Plugin Name: HNRK User Activity Log
  * Plugin URI:  https://www.hnrkagency.se
- * Description: Logs Subscriber logins and page visits.
+ * Description: Logs Subscriber logins and page visits per session.
  * Version:     1.0
  * Author:      Henrik Pettersson
  * Author URI:  https://www.hnrkagency.se
