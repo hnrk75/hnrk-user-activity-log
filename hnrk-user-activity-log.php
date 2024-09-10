@@ -27,7 +27,7 @@ add_action('admin_enqueue_scripts', 'hnrk_enqueue_custom_css');
 // Include necessary files.
 include(plugin_dir_path(__FILE__) . 'includes/admin.php');
 include(plugin_dir_path(__FILE__) . 'includes/functions.php');
-include(plugin_dir_path(__FILE__) . 'includes/sort-by-page.php');
+include(plugin_dir_path(__FILE__) . 'includes/visits-by-page.php');
 
 // Enqueue custom CSS for admin pages.
 function hnrk_enqueue_custom_css($hook) {

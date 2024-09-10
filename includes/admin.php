@@ -23,7 +23,7 @@ function hnrk_create_admin_menu() {
 		'Visits by Page',
 		'manage_options',
 		'hnrk-sort-by-page',
-		'hnrk_display_sort_by_page'
+		'hnrk_display_visits_by_page'
 	);
 }
 
@@ -37,6 +37,7 @@ function hnrk_display_logs_page() {
 	?>
 	<div class="wrap">
 		<h1>User Activity Log</h1>
+		<p><b>If you need more information about the user, click on the username</b></p>
 
 		<form method="get" action="">
 			<input type="hidden" name="page" value="hnrk-user-activity-log">
@@ -63,8 +64,7 @@ function hnrk_display_logs_page() {
 		<div class="hnrk-logs-container">
 			<div class="hnrk-log-header">
 				<div class="hnrk-log-cell">User</div>
-				<div class="hnrk-log-cell">Registration date</div>
-				<div class="hnrk-log-cell">Login date & time</div>
+				<div class="hnrk-log-cell">Login</div>
 				<div class="hnrk-log-cell">Pages visited during logged in session</div>
 			</div>
 			<div class="hnrk-log-body">
@@ -85,32 +85,45 @@ function hnrk_display_logs_page() {
 function hnrk_display_all_logs() {
 	$subscribers = get_users(array('role' => 'subscriber'));
 
+	$all_logs = array();
+
 	foreach ($subscribers as $subscriber) {
 		$user_id = $subscriber->ID;
-		$registration_date = $subscriber->user_registered;
 		$user_profile_url = get_edit_user_link($user_id);
 		$logins = get_user_meta($user_id, 'login_times', true);
 
 		if ($logins) {
 			foreach ($logins as $login) {
-				echo '<div class="hnrk-log-row">';
-				echo '<div class="hnrk-log-cell"><a href="' . esc_url($user_profile_url) . '" target="_blank">' . esc_html($subscriber->user_login) . '</a></div>';
-				echo '<div class="hnrk-log-cell">' . esc_html($registration_date) . '</div>';
-				echo '<div class="hnrk-log-cell">' . esc_html($login['time']) . '</div>';
-				echo '<div class="hnrk-log-cell">';
-				if (isset($login['pages'])) {
-					echo '<ul>';
-					foreach ($login['pages'] as $visit) {
-						echo '<li>' . esc_html($visit['time']) . ' - <a href="' . esc_url($visit['page']) . '" target="_blank">' . esc_html($visit['page']) . '</a></li>';
-					}
-					echo '</ul>';
-				} else {
-					echo 'No pages visited yet.';
-				}
-				echo '</div>';
-				echo '</div>';
+				$all_logs[] = array(
+					'user_login' => $subscriber->user_login,
+					'login_time' => $login['time'],
+					'pages' => $login['pages'],
+					'user_profile_url' => $user_profile_url
+				);
 			}
 		}
+	}
+
+	usort($all_logs, function($a, $b) {
+		return strtotime($b['login_time']) - strtotime($a['login_time']);
+	});
+
+	foreach ($all_logs as $log) {
+		echo '<div class="hnrk-log-row">';
+		echo '<div class="hnrk-log-cell"><a href="' . esc_url($log['user_profile_url']) . '" target="_blank">' . esc_html($log['user_login']) . '</a></div>';
+		echo '<div class="hnrk-log-cell">' . esc_html($log['login_time']) . '</div>';
+		echo '<div class="hnrk-log-cell">';
+		if (isset($log['pages'])) {
+			echo '<ul>';
+			foreach ($log['pages'] as $visit) {
+				echo '<li><a href="' . esc_url($visit['page']) . '" target="_blank">' . esc_html($visit['page']) . '</a></li>';
+			}
+			echo '</ul>';
+		} else {
+			echo 'No pages visited yet.';
+		}
+		echo '</div>';
+		echo '</div>';
 	}
 }
 
@@ -119,21 +132,23 @@ function hnrk_display_user_logs($user_id = 0) {
 	if ($user_id) {
 		$subscriber = get_user_by('id', $user_id);
 		if ($subscriber) {
-			$registration_date = $subscriber->user_registered;
 			$user_profile_url = get_edit_user_link($user_id);
 			$logins = get_user_meta($user_id, 'login_times', true);
 
 			if ($logins) {
+				usort($logins, function($a, $b) {
+					return strtotime($b['time']) - strtotime($a['time']);
+				});
+
 				foreach ($logins as $login) {
 					echo '<div class="hnrk-log-row">';
 					echo '<div class="hnrk-log-cell"><a href="' . esc_url($user_profile_url) . '" target="_blank">' . esc_html($subscriber->user_login) . '</a></div>';
-					echo '<div class="hnrk-log-cell">' . esc_html($registration_date) . '</div>';
 					echo '<div class="hnrk-log-cell">' . esc_html($login['time']) . '</div>';
 					echo '<div class="hnrk-log-cell">';
 					if (isset($login['pages'])) {
 						echo '<ul>';
 						foreach ($login['pages'] as $visit) {
-							echo '<li>' . esc_html($visit['time']) . ' - <a href="' . esc_url($visit['page']) . '" target="_blank">' . esc_html($visit['page']) . '</a></li>';
+							echo '<li><a href="' . esc_url($visit['page']) . '" target="_blank">' . esc_html($visit['page']) . '</a></li>';
 						}
 						echo '</ul>';
 					} else {

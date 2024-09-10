@@ -1,12 +1,12 @@
 <?php
 /**
- * Sort by Page for the HNRK User Activity Log plugin.
+ * Visits by Page for the HNRK User Activity Log plugin.
  *
  * @package HNRK_User_Activity_Log
  */
 
 // Function to display the submenu page content.
-function hnrk_display_sort_by_page() {
+function hnrk_display_visits_by_page() {
 	if (!current_user_can('manage_options')) {
 		wp_die('You do not have sufficient permissions to access this page.');
 	}
@@ -14,6 +14,7 @@ function hnrk_display_sort_by_page() {
 	?>
 	<div class="wrap">
 		<h1>User Activity Log - Visits by Page</h1>
+		<p><b>If you need more information about the user, click on the username</b></p>
 
 		<div class="hnrk-logs-container">
 			<div class="hnrk-log-header">
