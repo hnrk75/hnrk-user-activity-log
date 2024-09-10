@@ -27,11 +27,11 @@ add_action('admin_enqueue_scripts', 'hnrk_enqueue_custom_css');
 // Include necessary files.
 include(plugin_dir_path(__FILE__) . 'includes/admin.php');
 include(plugin_dir_path(__FILE__) . 'includes/functions.php');
+include(plugin_dir_path(__FILE__) . 'includes/sort-by-page.php');
 
-// Function to enqueue custom CSS for admin page.
+// Enqueue custom CSS for admin pages.
 function hnrk_enqueue_custom_css($hook) {
-	if ($hook !== 'toplevel_page_hnrk-user-activity-log') {
-		return;
+	if ($hook === 'toplevel_page_hnrk-user-activity-log' || $hook === 'activity-log_page_hnrk-sort-by-page') {
+		wp_enqueue_style('hnrk-admin-style', plugin_dir_url(__FILE__) . 'css/style.css');
 	}
-	wp_enqueue_style('hnrk-admin-style', plugin_dir_url(__FILE__) . 'css/style.css');
 }

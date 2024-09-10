@@ -5,7 +5,7 @@
  * @package HNRK_User_Activity_Log
  */
 
-// Create an admin menu item for the HNRK User Activity Log plugin.
+// Create an admin menu item and submenu for the HNRK User Activity Log plugin.
 function hnrk_create_admin_menu() {
 	add_menu_page(
 		'User Activity Log',
@@ -15,6 +15,15 @@ function hnrk_create_admin_menu() {
 		'hnrk_display_logs_page',
 		'dashicons-visibility',
 		2
+	);
+
+	add_submenu_page(
+		'hnrk-user-activity-log',
+		'Visits by Page',
+		'Visits by Page',
+		'manage_options',
+		'hnrk-sort-by-page',
+		'hnrk_display_sort_by_page'
 	);
 }
 
@@ -51,12 +60,9 @@ function hnrk_display_logs_page() {
 			</div>
 		</form>
 
-
 		<div class="hnrk-logs-container">
 			<div class="hnrk-log-header">
 				<div class="hnrk-log-cell">User</div>
-				<div class="hnrk-log-cell">Full name</div>
-				<div class="hnrk-log-cell">Email address</div>
 				<div class="hnrk-log-cell">Registration date</div>
 				<div class="hnrk-log-cell">Login date & time</div>
 				<div class="hnrk-log-cell">Pages visited during logged in session</div>
@@ -81,19 +87,14 @@ function hnrk_display_all_logs() {
 
 	foreach ($subscribers as $subscriber) {
 		$user_id = $subscriber->ID;
-		$first_name = get_user_meta($user_id, 'first_name', true);
-		$last_name = get_user_meta($user_id, 'last_name', true);
-		$full_name = trim($first_name . ' ' . $last_name);
-		$logins = get_user_meta($user_id, 'login_times', true);
-		$email = $subscriber->user_email;
 		$registration_date = $subscriber->user_registered;
+		$user_profile_url = get_edit_user_link($user_id);
+		$logins = get_user_meta($user_id, 'login_times', true);
 
 		if ($logins) {
 			foreach ($logins as $login) {
 				echo '<div class="hnrk-log-row">';
-				echo '<div class="hnrk-log-cell">' . esc_html($subscriber->user_login) . '</div>';
-				echo '<div class="hnrk-log-cell">' . esc_html($full_name) . '</div>';
-				echo '<div class="hnrk-log-cell">' . esc_html($email) . '</div>';
+				echo '<div class="hnrk-log-cell"><a href="' . esc_url($user_profile_url) . '" target="_blank">' . esc_html($subscriber->user_login) . '</a></div>';
 				echo '<div class="hnrk-log-cell">' . esc_html($registration_date) . '</div>';
 				echo '<div class="hnrk-log-cell">' . esc_html($login['time']) . '</div>';
 				echo '<div class="hnrk-log-cell">';
@@ -118,19 +119,14 @@ function hnrk_display_user_logs($user_id = 0) {
 	if ($user_id) {
 		$subscriber = get_user_by('id', $user_id);
 		if ($subscriber) {
-			$first_name = get_user_meta($user_id, 'first_name', true);
-			$last_name = get_user_meta($user_id, 'last_name', true);
-			$full_name = trim($first_name . ' ' . $last_name);
-			$logins = get_user_meta($user_id, 'login_times', true);
-			$email = $subscriber->user_email;
 			$registration_date = $subscriber->user_registered;
+			$user_profile_url = get_edit_user_link($user_id);
+			$logins = get_user_meta($user_id, 'login_times', true);
 
 			if ($logins) {
 				foreach ($logins as $login) {
 					echo '<div class="hnrk-log-row">';
-					echo '<div class="hnrk-log-cell">' . esc_html($subscriber->user_login) . '</div>';
-					echo '<div class="hnrk-log-cell">' . esc_html($full_name) . '</div>';
-					echo '<div class="hnrk-log-cell">' . esc_html($email) . '</div>';
+					echo '<div class="hnrk-log-cell"><a href="' . esc_url($user_profile_url) . '" target="_blank">' . esc_html($subscriber->user_login) . '</a></div>';
 					echo '<div class="hnrk-log-cell">' . esc_html($registration_date) . '</div>';
 					echo '<div class="hnrk-log-cell">' . esc_html($login['time']) . '</div>';
 					echo '<div class="hnrk-log-cell">';
