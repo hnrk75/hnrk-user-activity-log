@@ -1,0 +1,75 @@
+/* CSS for admin page styling */
+.wrap {
+	padding: 1.5rem;
+}
+
+.hnrk-logs-container {
+	display: flex;
+	flex-direction: column;
+	border: 1px solid #ddd;
+	border-radius: 0.25rem;
+	overflow: hidden;
+}
+
+.hnrk-log-header {
+	display: flex;
+	background-color: #f1f1f1;
+	font-weight: bold;
+}
+
+.hnrk-log-cell {
+	flex: 1;
+	padding: 0.625rem;
+	border-right: 1px solid #ddd;
+	text-align: left;
+}
+
+.hnrk-log-cell:last-child {
+	border-right: none;
+}
+
+.hnrk-log-cell ul {
+margin: 0;
+}
+
+.hnrk-log-body {
+	display: flex;
+	flex-direction: column;
+}
+
+.hnrk-log-row {
+	display: flex;
+	border-bottom: 1px solid #ddd;
+}
+
+.hnrk-log-row:nth-child(odd) {
+	background-color: #f9f9f9;
+}
+
+.hnrk-log-row .hnrk-log-cell {
+	padding: 0.625rem;
+	border-right: 1px solid #ddd;
+}
+
+.hnrk-log-row .hnrk-log-cell:last-child {
+	border-right: none;
+}
+
+.hnrk-log-row a {
+	color: #0073aa;
+}
+
+.hnrk-log-row a:hover {
+	text-decoration: underline;
+}
+
+
+/* Style for the dropdown */
+form {
+	margin-bottom: 20px;
+}
+
+select {
+	padding: 5px;
+	font-size: 14px;
+}
