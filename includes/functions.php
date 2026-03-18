@@ -40,7 +40,7 @@ function hnrk_log_user_registration($user_id) {
 }
 add_action('user_register', 'hnrk_log_user_registration');
 
-// Function to log user page visits.
+/**Function to log user page visits. */
 function hnrk_log_page_visits() {
 	if (is_user_logged_in()) {
 		$user = wp_get_current_user();

@@ -1,8 +1,4 @@
 /* CSS for admin page styling */
-.wrap {
-	padding: 1.5rem;
-}
-
 .hnrk-logs-container {
 	display: flex;
 	flex-direction: column;
