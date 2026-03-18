@@ -10,6 +10,8 @@
             "savePath": "/assets/css"
         }
     ],
+    "phpcbf.standard": "WordPress",
+    "phpcbf.executablePath": "/Users/henpet/.composer/vendor/bin/phpcbf",
     "[php]": {
         "editor.defaultFormatter": "persoderlind.vscode-phpcbf",
         "editor.formatOnSave": true,
