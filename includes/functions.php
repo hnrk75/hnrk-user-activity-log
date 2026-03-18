@@ -5,56 +5,76 @@
  * @package HNRK_User_Activity_Log
  */
 
-// Function to log user login times.
-function hnrk_log_user_login($user_login, $user) {
-	if (in_array('subscriber', (array) $user->roles)) {
-		$time = current_time('mysql');
+/**
+ * Log user login times.
+ *
+ * @param string  $user_login The user's login name.
+ * @param WP_User $user       The user object.
+ */
+function hnrk_log_user_login( $user_login, $user ) {
+	if ( in_array( 'subscriber', (array) $user->roles, true ) ) {
+		$time    = current_time( 'mysql' );
 		$user_id = $user->ID;
 
-		$logins = get_user_meta($user_id, 'login_times', true);
-		if (!$logins) {
+		$logins = get_user_meta( $user_id, 'login_times', true );
+		if ( ! $logins ) {
 			$logins = array();
 		}
 
-		$logins[] = array('time' => $time, 'pages' => array());
+		$logins[] = array(
+			'time'  => $time,
+			'pages' => array(),
+		);
 
-		update_user_meta($user_id, 'login_times', $logins);
+		update_user_meta( $user_id, 'login_times', $logins );
 	}
 }
 
-// Function to log user registration time.
-function hnrk_log_user_registration($user_id) {
-	$registration_time = current_time('mysql');
+/**
+ * Log user registration time.
+ *
+ * @param int $user_id The newly registered user's ID.
+ */
+function hnrk_log_user_registration( $user_id ) {
+	$registration_time = current_time( 'mysql' );
 
-	$logins = get_user_meta($user_id, 'login_times', true);
-	if (!$logins) {
+	$logins = get_user_meta( $user_id, 'login_times', true );
+	if ( ! $logins ) {
 		$logins = array();
 	}
 
-	array_unshift($logins, array(
-		'time' => $registration_time,
-		'pages' => array()
-	));
+	array_unshift(
+		$logins,
+		array(
+			'time'  => $registration_time,
+			'pages' => array(),
+		)
+	);
 
-	update_user_meta($user_id, 'login_times', $logins);
+	update_user_meta( $user_id, 'login_times', $logins );
 }
-add_action('user_register', 'hnrk_log_user_registration');
+add_action( 'user_register', 'hnrk_log_user_registration' );
 
-/**Function to log user page visits. */
+/**
+ * Log page visits for logged-in subscribers.
+ */
 function hnrk_log_page_visits() {
-	if (is_user_logged_in()) {
+	if ( is_user_logged_in() ) {
 		$user = wp_get_current_user();
-		if (in_array('subscriber', (array) $user->roles)) {
-			$user_id = $user->ID;
-			$current_page = home_url(add_query_arg([], $GLOBALS['wp']->request));
-			$time = current_time('mysql');
+		if ( in_array( 'subscriber', (array) $user->roles, true ) ) {
+			$user_id      = $user->ID;
+			$current_page = home_url( add_query_arg( array(), $GLOBALS['wp']->request ) );
+			$time         = current_time( 'mysql' );
 
-			$logins = get_user_meta($user_id, 'login_times', true);
-			if ($logins) {
-				$last_login_index = count($logins) - 1;
-				$logins[$last_login_index]['pages'][] = array('page' => $current_page, 'time' => $time);
+			$logins = get_user_meta( $user_id, 'login_times', true );
+			if ( $logins ) {
+				$last_login_index                       = count( $logins ) - 1;
+				$logins[ $last_login_index ]['pages'][] = array(
+					'page' => $current_page,
+					'time' => $time,
+				);
 
-				update_user_meta($user_id, 'login_times', $logins);
+				update_user_meta( $user_id, 'login_times', $logins );
 			}
 		}
 	}

@@ -1,0 +1,95 @@
+// Variables
+$border-color: #ddd;
+$header-bg: #f1f1f1;
+$row-odd-bg: #f9f9f9;
+$link-color: #0073aa;
+$cell-padding: 0.625rem;
+$breakpoint-mobile: 960px;
+
+// Admin page styling
+.hnrk-logs-container {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid $border-color;
+  border-radius: 0.25rem;
+  overflow: hidden;
+}
+
+.hnrk-log-header {
+  display: flex;
+  background-color: $header-bg;
+  font-weight: bold;
+}
+
+.hnrk-log-body {
+  display: flex;
+  flex-direction: column;
+}
+
+.hnrk-log-row {
+  display: flex;
+  border-bottom: 1px solid $border-color;
+
+  &:nth-child(odd) {
+    background-color: $row-odd-bg;
+  }
+
+  a {
+    color: $link-color;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}
+
+.hnrk-log-cell {
+  flex: 1;
+  padding: $cell-padding;
+  border-right: 1px solid $border-color;
+  text-align: left;
+
+  &:last-child {
+    border-right: none;
+  }
+
+  ul {
+    list-style-type: none;
+    padding-left: 0;
+    margin: 0;
+
+    li {
+      margin-bottom: 0.5rem;
+    }
+  }
+}
+
+// Dropdown
+form {
+  margin-bottom: 20px;
+}
+
+select {
+  padding: 5px;
+  font-size: 14px;
+}
+
+// Responsive
+@media (max-width: $breakpoint-mobile) {
+  .hnrk-log-header {
+    display: none;
+  }
+
+  .hnrk-log-row {
+    flex-direction: column;
+
+    &:last-child .hnrk-log-cell {
+      border-bottom: none;
+    }
+  }
+
+  .hnrk-log-cell {
+    border-right: none;
+    border-bottom: 1px solid $border-color;
+  }
+}

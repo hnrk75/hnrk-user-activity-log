@@ -1,0 +1,19 @@
+{
+    "phpcs.standard": "WordPress",
+    "phpsab.standard": "WordPress",
+    "phpsab.fixerEnable": true,
+    "editor.formatOnSave": true,
+    "liveSassCompile.settings.formats": [
+        {
+            "format": "compressed",
+            "extensionName": ".css",
+            "savePath": "/assets/css"
+        }
+    ],
+    "[php]": {
+        "editor.defaultFormatter": "persoderlind.vscode-phpcbf",
+        "editor.formatOnSave": true,
+        "editor.insertSpaces": false,
+        "editor.tabSize": 4
+    }
+}
